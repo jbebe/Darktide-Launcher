@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="Launcher.GameSettings" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:p="clr-namespace:ResourceDictionary.Properties;assembly=ResourceDictionary" xmlns:LauncherHelper="clr-namespace:LauncherHelper;assembly=LauncherHelper" xmlns:sys="clr-namespace:System;assembly=mscorlib" Title="GameSettings" Width="850" Height="600" FontSize="20" WindowStyle="None" Topmost="False" ResizeMode="NoResize" WindowStartupLocation="Manual" AllowsTransparency="True" xmlns:launcher="clr-namespace:Launcher;assembly=Launcher">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <LauncherHelper:BoolToParameterConverter x:Key="BoolToParameterConverter" />
+      <sys:Int32 x:Key="Quality_Row_Index">0</sys:Int32>
+      <sys:Int32 x:Key="Display_Row_Index">1</sys:Int32>
+      <sys:Int32 x:Key="Resolution_Row_Index">2</sys:Int32>
+      <sys:Int32 x:Key="Screen_Mode_Row_Index">3</sys:Int32>
+      <sys:Int32 x:Key="Vertical_Sync_Row_Index">4</sys:Int32>
+      <sys:Int32 x:Key="Image_Row_Index">5</sys:Int32>
+      <sys:Int32 x:Key="Nvidia_Frame_Generation_Disabled_Index">6</sys:Int32>
+      <sys:Int32 x:Key="Nvidia_DLSS_Row_Index">7</sys:Int32>
+      <sys:Int32 x:Key="Frame_Generation_Row_Index">8</sys:Int32>
+      <sys:Int32 x:Key="Super_Resolution_Row_Index">9</sys:Int32>
+      <sys:Int32 x:Key="Nvidia_Reflex_Row_Index">10</sys:Int32>
+      <sys:Int32 x:Key="AMD_FSR_1_Row_Index">11</sys:Int32>
+      <sys:Int32 x:Key="AMD_FSR_2_Row_Index">12</sys:Int32>
+      <sys:Int32 x:Key="AMD_FFXFG_Row_Index">13</sys:Int32>
+      <sys:Int32 x:Key="Intel_XeSS_Row_Index">14</sys:Int32>
+      <sys:Int32 x:Key="Anti_Aliasing_Row_Index">15</sys:Int32>
+      <sys:Int32 x:Key="Ray_Tracing_Row_Index">16</sys:Int32>
+      <sys:Int32 x:Key="Worker_Threads_Row_Index">17</sys:Int32>
+      <sys:Int32 x:Key="IPv6_Network_Row_index">18</sys:Int32>
+      <sys:Int32 x:Key="Keybinding_Reset_Row_Index">19</sys:Int32>
+      <sys:Int32 x:Key="GPU_Crash_Dumps_Row_Index">20</sys:Int32>
+      <sys:Double x:Key="Max_Settigs_Labels_Width">340</sys:Double>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Control.Background>
+    <ImageBrush ImageSource="/ResourceDictionary;component/assets/settings_window/settings_background.png" />
+  </Control.Background>
+  <Grid Height="520" Margin="0,20,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="440" />
+      <RowDefinition Height="10" />
+      <RowDefinition Height="48" />
+    </Grid.RowDefinitions>
+    <ScrollViewer BorderThickness="0" Width="710" Style="{StaticResource StandardScrollViewerDarktide}">
+      <Grid>
+        <FrameworkElement.Resources>
+          <ResourceDictionary>
+            <Style x:Key="{x:Type Label}" TargetType="{x:Type Label}">
+              <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+            <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+              <Setter Property="Margin" Value="0" />
+            </Style>
+          </ResourceDictionary>
+        </FrameworkElement.Resources>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="{Binding FrameGenerationDisabledVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=Auto, TargetNullValue=0}" />
+          <RowDefinition Height="{Binding DLSSOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=40, TargetNullValue=0}" />
+          <RowDefinition Height="{Binding FrameGenerationOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=40, TargetNullValue=0}" />
+          <RowDefinition Height="{Binding DLSSOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=40, TargetNullValue=0}" />
+          <RowDefinition Height="{Binding ReflexOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=40, TargetNullValue=0}" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="{Binding RayTracingOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=40, TargetNullValue=0}" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="Auto" MinHeight="40" />
+          <RowDefinition Height="{Binding GPUCrashDumpsOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=Auto, TargetNullValue=0}" MinHeight="{Binding GPUCrashDumpsOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=40, TargetNullValue=0}" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0" />
+          <ColumnDefinition Width="Auto" MinWidth="320" MaxWidth="{StaticResource Max_Settigs_Labels_Width}" />
+          <ColumnDefinition Width="10" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="5" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="{StaticResource Quality_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_Quality}" Foreground="{Binding IsMouseOver, ElementName=QualityCombo, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="QualityCombo" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Quality_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding Qualities}" SelectedValue="{Binding CurrentQualityType}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_graphics_quality_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Display_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_Display}" Foreground="{Binding IsMouseOver, ElementName=OutputCombo, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="OutputCombo" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Display_Row_Index}" Grid.Column="3" DisplayMemberPath="DisplayName" ItemsSource="{Binding Outputs}" SelectedItem="{Binding CurrentOutput}" />
+        <Label Grid.Row="{StaticResource Resolution_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_Resolution}" Foreground="{Binding IsMouseOver, ElementName=ResolutionCombo, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="ResolutionCombo" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Resolution_Row_Index}" Grid.Column="3" DisplayMemberPath="DisplayName" ItemsSource="{Binding CurrentOutput.Resolutions}" SelectedItem="{Binding CurrentOutput.CurrentResolution}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_resolution_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Screen_Mode_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_Screen_Mode}" Foreground="{Binding IsMouseOver, ElementName=ScreenModeCombo, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="ScreenModeCombo" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Screen_Mode_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding ScreenModes}" SelectedValue="{Binding CurrentScreenMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_screen_mode_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Vertical_Sync_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_VSync}" Foreground="{Binding IsMouseOver, ElementName=VsyncModeCombo, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="VsyncModeCombo" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Vertical_Sync_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding VsyncSettings}" SelectedValue="{Binding Vsync}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_vsync_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Image Grid.Column="3" Grid.Row="{StaticResource Image_Row_Index}" Width="140" Height="20" HorizontalAlignment="Left" Source="/ResourceDictionary;component/assets/settings_window/divider.png" VerticalAlignment="Center" />
+        <TextBlock Grid.Row="{StaticResource Nvidia_Frame_Generation_Disabled_Index}" Grid.Column="1" Grid.ColumnSpan="3" Margin="5,0,0,0" TextWrapping="Wrap" Foreground="{StaticResource DarktideYellow}" Text="{x:Static p:Resources.loc_setting_dlss_g_not_available}" Visibility="{Binding FrameGenerationDisabledVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=Visible, TargetNullValue=Collapsed, Mode=OneWay}" />
+        <Label Grid.Row="{StaticResource Nvidia_DLSS_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.loc_setting_nvidia_dlss}" Foreground="{Binding IsMouseOver, ElementName=DLSSComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="DLSSComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Nvidia_DLSS_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding DLSSModes}" SelectedValue="{Binding CurrentDLSSMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_nvidia_dlss_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Nvidia_Reflex_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.loc_setting_nv_reflex}" Foreground="{Binding IsMouseOver, ElementName=ReflexComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="ReflexComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Nvidia_Reflex_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" IsEnabled="{Binding ReflexOptionEnabled, Mode=OneWay}" ItemsSource="{Binding ReflexModes}" SelectedValue="{Binding CurrentReflexMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_nv_reflex_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Frame_Generation_Row_Index}" Grid.Column="1" Margin="25,0,0,0" Content="{x:Static p:Resources.loc_setting_dlss_g}" Foreground="{Binding IsMouseOver, ElementName=FrameGenerationComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="FrameGenerationComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Frame_Generation_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding FrameGenerationModes}" SelectedValue="{Binding CurrentFrameGenerationMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_dlss_g_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Super_Resolution_Row_Index}" Grid.Column="1" Margin="25,0,0,0" Content="Super Resolution" Foreground="{Binding IsMouseOver, ElementName=SuperResolutionComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="SuperResolutionComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Super_Resolution_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding SuperResolutionModes}" SelectedValue="{Binding CurrentSuperResolutionMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_dlss_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource AMD_FSR_1_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.loc_setting_fsr}" Foreground="{Binding IsMouseOver, ElementName=FSRComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="FSRComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource AMD_FSR_1_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding FSRModes}" SelectedValue="{Binding CurrentFSRMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_fsr_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource AMD_FSR_2_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.loc_setting_fsr2}" Foreground="{Binding IsMouseOver, ElementName=FSR2ComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="FSR2ComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource AMD_FSR_2_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding FSR2Modes}" SelectedValue="{Binding CurrentFSR2Mode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_fsr2_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource AMD_FFXFG_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.loc_setting_ffxfg}" Foreground="{Binding IsMouseOver, ElementName=FFXFGComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="FFXFGComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource AMD_FFXFG_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding FFXFGModes}" SelectedValue="{Binding CurrentFFXFGMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_ffxfg_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Intel_XeSS_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.loc_setting_xess}" Foreground="{Binding IsMouseOver, ElementName=XeSSComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="XeSSComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Intel_XeSS_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding XeSSModes}" SelectedValue="{Binding CurrentXeSSMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_xess_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Anti_Aliasing_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_setting_anti_ailiasing}" Foreground="{Binding IsMouseOver, ElementName=AntiAliasingComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="AntiAliasingComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Anti_Aliasing_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" IsEnabled="{Binding AntiAliasingOptionEnabled, Mode=OneWay}" ItemsSource="{Binding AntiAliasingModes}" SelectedValue="{Binding CurrentAntiAliasingMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_anti_ailiasing_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Ray_Tracing_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_ray_tracing}" Foreground="{Binding IsMouseOver, ElementName=RayTracingComboMode, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <ComboBox Name="RayTracingComboMode" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{StaticResource StandardComboDarktide}" Grid.Row="{StaticResource Ray_Tracing_Row_Index}" Grid.Column="3" DisplayMemberPath="Value" SelectedValuePath="Key" IsEnabled="{Binding RayTracingOptionVisible, Mode=OneWay}" ItemsSource="{Binding RayTracingModes}" SelectedValue="{Binding CurrentRayTracingMode}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.loc_setting_ray_tracing_quality_mouseover}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </ComboBox>
+        <Label Grid.Row="{StaticResource Worker_Threads_Row_Index}" Grid.Column="1" Content="{x:Static p:Resources.LOC_WorkerThreads}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="37" Margin="0" Foreground="{Binding IsMouseOver, ElementName=thread_slider, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <Label Grid.Row="{StaticResource Worker_Threads_Row_Index}" Grid.Column="3" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{Binding Value, ElementName=thread_slider}" Foreground="{Binding IsMouseOver, ElementName=thread_slider, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideBrownLightTextBrush}, Mode=OneWay}" />
+        <Slider Name="thread_slider" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Grid.Row="{StaticResource Worker_Threads_Row_Index}" Grid.Column="3" Minimum="1" SmallChange="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" Height="40" Margin="40,0,0,0" HorizontalAlignment="Stretch" Width="Auto" MinWidth="200" Style="{StaticResource SliderDarktide}" Maximum="{Binding MaxWorkerThreads}" Value="{Binding CurrentWorkerThreads}">
+          <FrameworkElement.ToolTip>
+            <ToolTip>
+              <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.LOC_WorkerThreadsTip}" FontFamily="{Binding CurrentFontFamily}" />
+            </ToolTip>
+          </FrameworkElement.ToolTip>
+        </Slider>
+        <TextBlock Grid.Row="{StaticResource IPv6_Network_Row_index}" Grid.Column="1" Text="{x:Static p:Resources.loc_setting_ipv6}" TextWrapping="Wrap" Width="{StaticResource Max_Settigs_Labels_Width}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="{Binding IsMouseOver, ElementName=IPv6NetworkCheckBox, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <CheckBox Name="IPv6NetworkCheckBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="20" Height="20" ToolTip="{x:Static p:Resources.loc_setting_ipv6_mouseover}" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{DynamicResource CheckBoxDarktide}" Grid.Row="{StaticResource IPv6_Network_Row_index}" Grid.Column="3" IsChecked="{Binding IPv6NetworkEnabled}" />
+        <TextBlock Grid.Row="{StaticResource Keybinding_Reset_Row_Index}" Grid.Column="1" Text="{x:Static p:Resources.loc_setting_keybinding_reset_on_start}" TextWrapping="Wrap" Width="{StaticResource Max_Settigs_Labels_Width}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="{Binding IsMouseOver, ElementName=ResetKeybindingsCheckBox, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <CheckBox Name="ResetKeybindingsCheckBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="20" Height="20" ToolTip="{x:Static p:Resources.loc_setting_keybinding_reset_on_start_mouseover}" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{DynamicResource CheckBoxDarktide}" Grid.Row="{StaticResource Keybinding_Reset_Row_Index}" Grid.Column="3" IsChecked="{Binding ResetKeyboardsBindings}" />
+        <TextBlock Grid.Row="{StaticResource GPU_Crash_Dumps_Row_Index}" Grid.Column="1" Text="{x:Static p:Resources.loc_setting_gpu_crash_dumps}" TextWrapping="Wrap" Width="{StaticResource Max_Settigs_Labels_Width}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="{Binding IsMouseOver, ElementName=GpuCrashDumpCheckBox, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <CheckBox Name="GpuCrashDumpCheckBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="20" Height="20" ToolTip="{x:Static p:Resources.loc_setting_gpu_crash_dumps_mouseover}" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{DynamicResource CheckBoxDarktide}" Grid.Row="{StaticResource GPU_Crash_Dumps_Row_Index}" Grid.Column="3" IsChecked="{Binding GPUCrashDumpsOverride}" />
+      </Grid>
+    </ScrollViewer>
+    <Grid Row="2" HorizontalAlignment="Center" Width="Auto" Margin="0,0,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Button Name="CancelButton" Style="{StaticResource GenericDynamicButton}" Content="{x:Static p:Resources.LOC_Cancel}" Grid.Column="0" Height="48" MinWidth="160" BorderBrush="{x:Null}" Click="on_click_cancel_settings" />
+      <Button Name="ResetButton" Style="{StaticResource GenericDynamicButton}" Content="{x:Static p:Resources.LOC_Reset}" Grid.Column="2" Height="48" MinWidth="160" Click="on_click_reset_settings" />
+      <Button Name="AcceptButton" Style="{StaticResource GenericDynamicButton}" Content="{x:Static p:Resources.LOC_Accept}" Grid.Column="4" Height="48" MinWidth="160" Click="on_click_accept_settings" />
+    </Grid>
+  </Grid>
+</Window>

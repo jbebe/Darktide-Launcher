@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="Launcher.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Launcher" xmlns:r="clr-namespace:ResourceDictionary.Properties;assembly=ResourceDictionary" xmlns:classLibrary="clr-namespace:LauncherHelper;assembly=LauncherHelper" xmlns:p="clr-namespace:Launcher.Properties" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="Launcher" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="Manual" MinHeight="900" Width="1280" Height="900" SizeToContent="Height" AllowsTransparency="True" Foreground="{x:Null}" Background="{x:Null}" Closed="OnWindowClosed" Activated="Window_Activated">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Image Grid.Row="0" Stretch="Fill" Width="1280" Source="/ResourceDictionary;component/assets/main_window/fallback_background.jpg" Height="800" Margin="0,0,0,0" Panel.ZIndex="0" />
+    <Grid Name="MainWindowHost" ZIndex="1" Row="0" Background="#00000000" Height="870" />
+    <Grid Name="DeveloperGrid" ZIndex="0" Row="1" HorizontalAlignment="Stretch" Background="#FF000000" Margin="0,-30,0,0" Height="100" Width="1280" Visibility="Hidden" MouseDown="DeveloperGrid_OnMouseDown">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="30" />
+        <RowDefinition Height="30" />
+        <RowDefinition Height="30" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="200" />
+        <ColumnDefinition Width="100" />
+        <ColumnDefinition Width="250" />
+        <ColumnDefinition Width="150" />
+        <ColumnDefinition Width="300" />
+      </Grid.ColumnDefinitions>
+      <Label Foreground="{StaticResource DarktideBrownLightTextBrush}" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{Binding ContentRevision, Mode=TwoWay}" />
+      <Label Foreground="{StaticResource DarktideBrownLightTextBrush}" Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{Binding LauncherVersion, Mode=TwoWay}" />
+      <Label Content="Current Language (Resets on restart)" Foreground="{StaticResource DarktideBrownLightTextBrush}" Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" />
+      <ComboBox Name="DebugLanguageComboBox" Grid.Row="2" Style="{StaticResource StandardComboDarktide}" Margin="0,5,147,5" Grid.Column="2" DisplayMemberPath="Value" SelectedValuePath="Key" FontSize="20" Grid.ColumnSpan="2" ItemsSource="{Binding DebugLanguages}" SelectedValue="{Binding CurrentDebugLanguage}" MouseEnter="DebugLanguageComboBox_OnMouseEnter" SelectionChanged="Selector_OnSelectionChanged" />
+      <Label Foreground="{StaticResource DarktideBrownLightTextBrush}" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{Binding ExecutableDescription, Mode=TwoWay}" />
+      <Button Name="SwitchExeButton" Style="{StaticResource FeatureButton}" Content="{x:Static r:Resources.LOC_SWITCH_EXE}" Foreground="{StaticResource DarktideBrownLightTextBrush}" FontSize="20" Grid.Column="4" Height="60" Grid.Row="2" HorizontalAlignment="Left" Click="SwitchExeButton_OnClick" />
+    </Grid>
+  </Grid>
+</Window>

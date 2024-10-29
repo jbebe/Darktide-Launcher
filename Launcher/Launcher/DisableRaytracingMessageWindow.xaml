@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="Launcher.DisableRaytracingMessageWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:ResourceDictionary.Properties;assembly=ResourceDictionary" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:rd="clr-namespace:ResourceDictionary;assembly=ResourceDictionary" ResizeMode="NoResize" WindowStartupLocation="Manual" FontSize="20" WindowStyle="None" Topmost="True" Height="320" Width="600" AllowsTransparency="True" Title="Raytracing Enabled" xmlns:launcher="clr-namespace:Launcher;assembly=Launcher">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ResourceDictionary;component/Style.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Control.Background>
+    <ImageBrush ImageSource="/ResourceDictionary;component/assets/common/popup_background_650x450.png" />
+  </Control.Background>
+  <Grid Margin="40">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="60" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition Width="460" />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <TextBlock Name="CrashTitle" Grid.Row="0" Grid.Column="1" Text="{x:Static p:Resources.loc_raytracing_enabled_notification}" Foreground="{StaticResource DarktideBrownLightTextBrush}" TextAlignment="Center" TextWrapping="Wrap" Margin="0 0 0 10" MaxWidth="450" />
+    <Grid Row="1" Column="1" Margin="0,0,0,0">
+      <Button Name="SaveButton" Content="{x:Static p:Resources.loc_leave_on}" Style="{StaticResource GenericDynamicButton}" Grid.Column="0" HorizontalAlignment="Left" Height="48" Click="LeaveOnButtonClick" />
+      <Button Name="CancelButton" Content="{x:Static p:Resources.loc_turn_off}" Style="{StaticResource GenericDynamicButton}" HorizontalAlignment="Right" Height="48" Click="TurnOffButtonClick" />
+    </Grid>
+  </Grid>
+</Window>

@@ -27,6 +27,7 @@
     <Reference Include="LauncherHelper">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Warhammer 40,000 DARKTIDE\launcher\LauncherHelper.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
     <Reference Include="ResourceDictionary">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Warhammer 40,000 DARKTIDE\launcher\ResourceDictionary.dll</HintPath>

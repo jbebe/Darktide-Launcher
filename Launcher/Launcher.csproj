@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <AssemblyName>Launcher</AssemblyName>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -18,6 +18,9 @@
   <ItemGroup>
     <None Remove="darktide_icon.ico" />
     <EmbeddedResource Include="darktide_icon.ico" LogicalName="darktide_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />

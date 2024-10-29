@@ -8,7 +8,7 @@
       <ColumnDefinition Width="60" />
       <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
-    <wpf:ImageAwesome Grid.Column="0" ImageAwesome.Foreground="#FFFFFFFF" FrameworkElement.Margin="20,0,0,0" FrameworkElement.Height="40" xmlns:wpf="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF" wpf:ImageAwesome.Icon="Spinner" wpf:ImageAwesome.Spin="True" wpf:ImageAwesome.SpinDuration="4" />
+    <wpf:ImageAwesome Grid.Column="0" wpf:ImageAwesome.Foreground="#FFFFFFFF" FrameworkElement.Margin="20,0,0,0" FrameworkElement.Height="40" xmlns:wpf="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF" wpf:ImageAwesome.Icon="Spinner" wpf:ImageAwesome.Spin="True" wpf:ImageAwesome.SpinDuration="4" />
     <TextBlock Name="DialogBox" Grid.Column="1" TextWrapping="Wrap" Foreground="{StaticResource DarktideBrownLightTextBrush}" Padding="10,20,20,20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="275" Margin="10,7,0,7" Text="{Binding Message}" />
   </Grid>
 </Window>

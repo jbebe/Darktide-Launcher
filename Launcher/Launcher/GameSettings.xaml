@@ -24,6 +24,7 @@
       <sys:Int32 x:Key="IPv6_Network_Row_index">18</sys:Int32>
       <sys:Int32 x:Key="Keybinding_Reset_Row_Index">19</sys:Int32>
       <sys:Int32 x:Key="GPU_Crash_Dumps_Row_Index">20</sys:Int32>
+      <sys:Int32 x:Key="AutoRun_Row_Index">21</sys:Int32>
       <sys:Double x:Key="Max_Settigs_Labels_Width">340</sys:Double>
     </ResourceDictionary>
   </FrameworkElement.Resources>
@@ -70,6 +71,7 @@
           <RowDefinition Height="40" />
           <RowDefinition Height="Auto" MinHeight="40" />
           <RowDefinition Height="{Binding GPUCrashDumpsOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=Auto, TargetNullValue=0}" MinHeight="{Binding GPUCrashDumpsOptionVisible, Converter={StaticResource BoolToParameterConverter}, ConverterParameter=40, TargetNullValue=0}" />
+          <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="0" />
@@ -209,6 +211,8 @@
         <CheckBox Name="ResetKeybindingsCheckBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="20" Height="20" ToolTip="{x:Static p:Resources.loc_setting_keybinding_reset_on_start_mouseover}" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{DynamicResource CheckBoxDarktide}" Grid.Row="{StaticResource Keybinding_Reset_Row_Index}" Grid.Column="3" IsChecked="{Binding ResetKeyboardsBindings}" />
         <TextBlock Grid.Row="{StaticResource GPU_Crash_Dumps_Row_Index}" Grid.Column="1" Text="{x:Static p:Resources.loc_setting_gpu_crash_dumps}" TextWrapping="Wrap" Width="{StaticResource Max_Settigs_Labels_Width}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="{Binding IsMouseOver, ElementName=GpuCrashDumpCheckBox, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
         <CheckBox Name="GpuCrashDumpCheckBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="20" Height="20" ToolTip="{x:Static p:Resources.loc_setting_gpu_crash_dumps_mouseover}" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{DynamicResource CheckBoxDarktide}" Grid.Row="{StaticResource GPU_Crash_Dumps_Row_Index}" Grid.Column="3" IsChecked="{Binding GPUCrashDumpsOverride}" />
+        <TextBlock Grid.Row="{StaticResource AutoRun_Row_Index}" Grid.Column="1" Text="{Binding LocAutoRun}" TextWrapping="Wrap" Width="{StaticResource Max_Settigs_Labels_Width}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="{Binding IsMouseOver, ElementName=AutoRunCheckBox, Converter={StaticResource BoolToParameterConverter}, ConverterParameter={StaticResource DarktideBrownSuperLightTextBrush}, TargetNullValue={StaticResource DarktideGreyMediumTextBrush}, Mode=OneWay}" />
+        <CheckBox Name="AutoRunCheckBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="20" Height="20" ToolTip="{Binding LocAutorunTooltip}" ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}" Style="{DynamicResource CheckBoxDarktide}" Grid.Row="{StaticResource AutoRun_Row_Index}" Grid.Column="3" IsChecked="{Binding AutoRun}" />
       </Grid>
     </ScrollViewer>
     <Grid Row="2" HorizontalAlignment="Center" Width="Auto" Margin="0,0,0,0">

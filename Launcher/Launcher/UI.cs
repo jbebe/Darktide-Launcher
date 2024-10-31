@@ -1050,8 +1050,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 		if (_autorun_time_left == 0)
 		{
 			_autorun_timer.Stop();
-			System.Windows.MessageBox.Show("Pü");
-			//PlayButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+			PlayButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
 			return;
 		}
 

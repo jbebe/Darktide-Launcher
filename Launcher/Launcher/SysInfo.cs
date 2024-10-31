@@ -6,12 +6,15 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Windows.Forms;
 using Launcher.Properties;
 using LauncherHelper;
 using Microsoft.Win32;
+using static Launcher.DirectXInterface;
 
 namespace Launcher;
 
@@ -85,6 +88,9 @@ public class SysInfo
 
 		public string DisplayName => string.Format("{0}x{1} {2}", Width, Height, IsCustom ? "(Custom)" : "");
 
+		// Required by JSON parse
+		public Resolution() {}
+
 		public Resolution(int width, int height, bool is_custom = false)
 		{
 			Width = width;
@@ -93,11 +99,68 @@ public class SysInfo
 		}
 	}
 
+	public class MakeshiftTuplePair
+	{
+		public int Item1;
+
+		public int Item2;
+
+		// Required by JSON parse
+		public MakeshiftTuplePair() {}
+
+		public MakeshiftTuplePair(int item1, int item2)
+		{
+			Item1 = item1;
+			Item2 = item2;
+		}
+	}
+
+	public class SerializableSupportedFeatures
+	{
+		public string Type;
+
+		public bool SupportsRaytracing;
+
+		// Nvidia props
+
+		public bool SupportsDLSS;
+
+		public bool SupportsDLSS_G;
+
+		public bool SupportsReflex;
+
+		public bool DisabledDLSS_G;
+
+		public RayTracingCapabilities RayTracingCaps;
+
+		public DLSSCapabilities DLSSCaps;
+
+		public Nvidia_GPU_Architecture Architecture;
+
+		public SerializableSupportedFeatures() {}
+
+		public SerializableSupportedFeatures(SupportedFeatures supportedFeatures)
+		{
+			Type = supportedFeatures.GetType().Name;
+			SupportsRaytracing = supportedFeatures.SupportsRaytracing;
+			if (supportedFeatures is NvidiaSupportedFeatures nvidiaFeatures)
+			{
+				Architecture = nvidiaFeatures.Architecture;
+				SupportsDLSS = nvidiaFeatures.SupportsDLSS;
+				SupportsDLSS_G = nvidiaFeatures.SupportsDLSS_G;
+				SupportsReflex = nvidiaFeatures.SupportsReflex;
+				DisabledDLSS_G = nvidiaFeatures.DisabledDLSS_G;
+				RayTracingCaps = nvidiaFeatures.RayTracingCaps;
+				DLSSCaps = nvidiaFeatures.DLSSCaps;
+			}
+		}
+	}
+
 	public class Output : INotifyPropertyChanged
 	{
 		private Resolution _currentResolution;
 
-		public Tuple<int, int> AspectRatio { get; set; }
+		public MakeshiftTuplePair AspectRatio { get; set; }
 
 		public int OutputId { get; set; }
 
@@ -120,7 +183,11 @@ public class SysInfo
 			}
 		}
 
-		public DirectXInterface.SupportedFeatures Features { get; set; }
+		public SerializableSupportedFeatures SerializableFeatures { get; set; }
+
+		private Lazy<SupportedFeatures> supportedFeatures;
+
+		public SupportedFeatures Features => supportedFeatures.Value;
 
 		public int OutputDisplayId => OutputId + 1;
 
@@ -136,14 +203,39 @@ public class SysInfo
 			}
 		}
 
-		public Output(int output_id, int adapter_id, string adapter_name)
+		public Output()
+		{
+			Resolutions = new List<Resolution>();
+			CurrentResolution = null;
+			SerializableFeatures = new SerializableSupportedFeatures();
+			supportedFeatures = new Lazy<SupportedFeatures>(() =>
+			{
+				return SerializableFeatures.Type switch
+				{
+					nameof(DefaultSupportedFeatures) => new DefaultSupportedFeatures(),
+					nameof(IntelSupportedFeatures) => new IntelSupportedFeatures(),
+					nameof(AmdSupportedFeatures) => new AmdSupportedFeatures(),
+					nameof(NvidiaSupportedFeatures) => new NvidiaSupportedFeatures
+					{
+						Architecture = SerializableFeatures.Architecture,
+						SupportsDLSS = SerializableFeatures.SupportsDLSS,
+						SupportsDLSS_G = SerializableFeatures.SupportsDLSS_G,
+						SupportsReflex = SerializableFeatures.SupportsReflex,
+						DisabledDLSS_G = SerializableFeatures.DisabledDLSS_G,
+						RayTracingCaps = SerializableFeatures.RayTracingCaps,
+						DLSSCaps = SerializableFeatures.DLSSCaps,
+						SupportsRaytracing = SerializableFeatures.SupportsRaytracing,
+					},
+					_ => throw new ArgumentOutOfRangeException(),
+				};
+			});
+		}
+
+		public Output(int output_id, int adapter_id, string adapter_name): this()
 		{
 			OutputId = output_id;
 			AdapterId = adapter_id;
 			AdapterName = adapter_name;
-			Resolutions = new List<Resolution>();
-			CurrentResolution = null;
-			Features = new DirectXInterface.DefaultSupportedFeatures();
 		}
 
 		public void MatchResolution(GameSettingsHolder.ScreenMode screenmode, int wanted_width, int wanted_height)
@@ -485,12 +577,37 @@ public class SysInfo
 		}
 	}
 
-	public bool fetch_outputs()
+	public bool fetch_outputs(LauncherSettings launcherSettings = null)
 	{
 		int preferredAdapter = -1;
 		try
 		{
 			int adapters = DirectXInterface.GetAdapters();
+			var adapterDescriptions = Enumerable.Range(0, adapters).Select(idx => ((uint)idx, DirectXInterface.GetAdapterDescription((uint)idx))).ToArray();
+
+			// Create cache for _outputs because DirectXInterface.GetSupportedFeatures is extremely heavy
+			string outputVersion = null;
+			 if (launcherSettings != null)
+			{
+				var outputVersionRaw = adapterDescriptions.Aggregate("", (acc, curr) =>
+				{
+					var (idx, desc) = curr;
+					return $"{acc}[{idx}][{desc}]";
+				});
+				using (MD5 md5 = MD5.Create())
+				{
+					md5.Initialize();
+					md5.ComputeHash(Encoding.UTF8.GetBytes(outputVersionRaw));
+					outputVersion = BitConverter.ToString(md5.Hash).Replace("-", "");
+				}
+				if (launcherSettings.OutputVersion == outputVersion)
+				{
+					_outputs = launcherSettings.Outputs;
+					_primary_output = _outputs[launcherSettings.PrimaryOutputId];
+					return true;
+				}
+			}
+
 			preferredAdapter = Task.Run(() => DirectXInterface.GetSystemPreferredAdapter(_debugLog)).Result;
 			if (preferredAdapter != -1)
 			{
@@ -501,9 +618,8 @@ public class SysInfo
 				preferredAdapter = 0;
 				FileLogger.Instance.CreateEntry("!! Couldn't find preferred adapter! Defaulting to 0 (" + DirectXInterface.GetAdapterDescription((uint)preferredAdapter) + ") !!");
 			}
-			for (uint num = 0u; num < adapters; num++)
+			foreach (var (num, adapterDescription) in adapterDescriptions)
 			{
-				string adapterDescription = DirectXInterface.GetAdapterDescription(num);
 				List<MonitorDescription> adapterMonitors = DirectXInterface.GetAdapterMonitors(num);
 				if (adapterMonitors.Count > 0)
 				{
@@ -525,8 +641,8 @@ public class SysInfo
 							{
 								output.CurrentResolution = output.Resolutions[output.Resolutions.Count - 1];
 							}
-							output.AspectRatio = new Tuple<int, int>(16, desktopHeight * 16 / desktopWidth);
-							output.Features = supportedFeatures;
+							output.AspectRatio = new MakeshiftTuplePair(16, desktopHeight * 16 / desktopWidth);
+							output.SerializableFeatures = new SerializableSupportedFeatures(supportedFeatures);
 							if (num == preferredAdapter && (i == 0 || _primary_output == null))
 							{
 								_primary_output = output;
@@ -543,6 +659,14 @@ public class SysInfo
 				{
 					FileLogger.Instance.CreateEntry($"!! DirectX returns no valid monitors attached for adapter {num} ({adapterDescription})");
 				}
+			}
+
+			if (_outputs.Count > 0 && _primary_output != null && launcherSettings != null)
+			{
+				launcherSettings.OutputVersion = outputVersion;
+				launcherSettings.Outputs = _outputs;
+				launcherSettings.PrimaryOutputId = _primary_output.AdapterId;
+				launcherSettings.Save();
 			}
 		}
 		catch (Exception ex)
@@ -573,7 +697,7 @@ public class SysInfo
 				output2.Resolutions.Add(resolution);
 				_primary_output = output2;
 				FileLogger.Instance.CreateEntry("Re-Checking Supported Graphics Features...");
-				_primary_output.Features = DirectXInterface.GetSupportedFeatures(_debugLog);
+				_primary_output.SerializableFeatures = new SerializableSupportedFeatures(DirectXInterface.GetSupportedFeatures(_debugLog));
 				if (!_outputs.Where((Output x) => x.AdapterId == preferredAdapter).Any())
 				{
 					_outputs.Add(output2);
@@ -589,6 +713,18 @@ public class SysInfo
 
 	public bool fetch_cpu_info()
 	{
+		// WMI doesn't work on Linux anyway so we can simply use Registry
+		var cpuName = Registry.LocalMachine.OpenSubKey("HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0")?.GetValue("ProcessorNameString") as string;
+		var processor = new Processor
+		{
+			_caption = "",
+			_manufacturer = "",
+			_maxclock = 0u,
+			_name = cpuName ?? "UNKNOWN"
+		};
+		_processors.Add(processor);
+		return true;
+#if NEVER
 		try
 		{
 			ManagementScope scope = new ManagementScope();
@@ -614,6 +750,7 @@ public class SysInfo
 			_processors.Add(processor2);
 		}
 		return true;
+#endif
 	}
 
 	public bool fetch_memory_info()

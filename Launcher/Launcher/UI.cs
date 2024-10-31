@@ -267,7 +267,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 				using (new FileLogger.ScopeHolder("SysInfo"))
 				{
 					_system_info = new SysInfo(_launcher_settings.DebugLog);
-					_system_info.fetch_outputs();
+					_system_info.fetch_outputs(_launcher_settings);
 					_system_info.fetch_cpu_info();
 					_system_info.fetch_memory_info();
 					FileLogger.Instance.CreateMultiLineEntry(_system_info.ToString());
@@ -550,7 +550,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 
 	private void OnSettingsButtonClick(object sender, RoutedEventArgs e)
 	{
-		_game_settings_dialog = new GameSettings(_game_settings_holder);
+		_game_settings_dialog = new GameSettings(_game_settings_holder, _launcher_settings);
 		_game_settings_dialog.IsVisibleChanged += OnGameSettingsIsVisibleChanged;
 		_game_settings_dialog.Owner = _ownerWindow;
 		ScreenHandler.DoCenterTop(_game_settings_dialog, _ownerWindow);
@@ -774,7 +774,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 		if (_game_settings_holder == null)
 		{
 			_game_settings_holder = new GameSettingsHolder(_ownerWindow, _system_info, _language);
-			if (_game_settings_holder.AutoRun) StartAutorunTimer();
+			if (_launcher_settings.AutoRun) StartAutorunTimer();
 		}
 		await _game_settings_holder.VerifyQualitySetting();
 		if (FileVerificationConditionsMet())

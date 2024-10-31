@@ -22,7 +22,7 @@
             </Shape.Fill>
           </Rectangle>
           <StackPanel Name="PlayButtonPanel" Grid.Column="0" ZIndex="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="50, 0, 0, 56" Orientation="Vertical">
-            <Button Name="PlayButton" ToolTipService.ShowOnDisabled="True" Style="{StaticResource PlayButton}" Foreground="#FFFFFFFF" Content="{x:Static r:Resources.LOC_BTN_LAUNCH}">
+            <Button Name="PlayButton" ToolTipService.ShowOnDisabled="True" Style="{StaticResource PlayButton}" Foreground="#FFFFFFFF" Content="{Binding PlayButtonContent}">
               <FrameworkElement.ToolTip>
                 <ToolTip Name="PlayButtonTooltip" Visibility="Hidden" Background="#FF646464">
                   <ContentControl.Content>

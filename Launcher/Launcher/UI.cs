@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Threading;
 using CrashReporter;
 using Launcher.Properties;
 using LauncherHelper;
@@ -334,6 +335,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 				System.Windows.Application.Current.Shutdown();
 			}
 			CheckGraphicsCardSoftware();
+			UpdatePlayButtonContent();
 		}
 	}
 
@@ -558,6 +560,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 
 	private async void OnVerifyFilesButtonClick(object sender, RoutedEventArgs e)
 	{
+		_autorun_timer.Stop();
 		ConfirmationBox obj = new ConfirmationBox(ResourceDictionary.Properties.Resources.loc_run_verify_files_dialog, "", ResourceDictionary.Properties.Resources.loc_btn_yes, ResourceDictionary.Properties.Resources.loc_btn_no, DialogResult.Yes, DialogResult.No, 770.0, 560.0, 390.0, "/ResourceDictionary;component/assets/settings_window/settings_background.png")
 		{
 			Owner = _ownerWindow
@@ -745,10 +748,12 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 		base.IsEnabled = !_game_settings_dialog.IsVisible;
 		if (_game_settings_dialog.IsVisible)
 		{
+			_autorun_timer.Stop();
 			BlurryBackground();
 		}
 		else
 		{
+			UpdatePlayButtonContent(clear: !_game_settings_holder.AutoRun);
 			UnBlurryBackground();
 		}
 	}
@@ -769,6 +774,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 		if (_game_settings_holder == null)
 		{
 			_game_settings_holder = new GameSettingsHolder(_ownerWindow, _system_info, _language);
+			if (_game_settings_holder.AutoRun) StartAutorunTimer();
 		}
 		await _game_settings_holder.VerifyQualitySetting();
 		if (FileVerificationConditionsMet())
@@ -839,6 +845,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 
 	private void ButtonClose_Click(object sender, RoutedEventArgs e)
 	{
+		_autorun_timer.Stop();
 		saveLauncherPlacement();
 		_launcher_settings.Save();
 		_game_settings_holder.SaveSettings();
@@ -998,5 +1005,55 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 			return _launcher_settings.LastContentRevision != _content_revision;
 		}
 		return false;
+	}
+
+	private const int AUTORUN_TIME = 3;
+
+	private DispatcherTimer _autorun_timer;
+
+	private int _autorun_time_left = AUTORUN_TIME;
+
+	public string _play_button_content { get; set; }
+
+	public string PlayButtonContent
+	{
+		get
+		{
+			return _play_button_content;
+		}
+		set
+		{
+			_play_button_content = value;
+			OnPropertyChanged("PlayButtonContent");
+		}
+	}
+
+	public void UpdatePlayButtonContent(bool clear = false)
+	{
+		var buttonText = ResourceDictionary.Properties.Resources.LOC_BTN_LAUNCH;
+		PlayButtonContent = clear ? buttonText : $"{buttonText} ({_autorun_time_left})";
+	}
+
+	private void StartAutorunTimer()
+	{
+		_autorun_time_left = AUTORUN_TIME;
+		_autorun_timer = new DispatcherTimer();
+		_autorun_timer.Interval = TimeSpan.FromSeconds(1);
+		_autorun_timer.Tick += AutoRunTimer_Tick;
+		_autorun_timer.Start();
+	}
+
+	private void AutoRunTimer_Tick(object sender, EventArgs e)
+	{
+		_autorun_time_left -= 1;
+		if (_autorun_time_left == 0)
+		{
+			_autorun_timer.Stop();
+			System.Windows.MessageBox.Show("Pü");
+			//PlayButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+			return;
+		}
+
+		UpdatePlayButtonContent();
 	}
 }

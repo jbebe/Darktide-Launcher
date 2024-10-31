@@ -196,8 +196,8 @@ public class ArgumentHolder
 		if (steamInitialized && releasePlatform == ReleasePlatform.steam.ToString())
 		{
 			FileLogger.Instance.CreateEntry("Steam is initialized.");
-			//uint appId = SteamUtils.GetAppID().m_AppId;
-			string pchName = new string(' ', 32);
+			uint appId = 1361210;// SteamUtils.GetAppID().m_AppId;
+			string pchName = "default";// new string(' ', 32);
 			//if (!SteamApps.GetCurrentBetaName(out pchName, 32))
 			//{
 			//	pchName = "default";

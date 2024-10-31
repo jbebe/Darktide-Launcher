@@ -335,7 +335,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 				System.Windows.Application.Current.Shutdown();
 			}
 			CheckGraphicsCardSoftware();
-			UpdatePlayButtonContent();
+			UpdatePlayButtonContent(clear: true);
 		}
 	}
 
@@ -560,7 +560,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 
 	private async void OnVerifyFilesButtonClick(object sender, RoutedEventArgs e)
 	{
-		_autorun_timer.Stop();
+		_autorun_timer?.Stop();
 		ConfirmationBox obj = new ConfirmationBox(ResourceDictionary.Properties.Resources.loc_run_verify_files_dialog, "", ResourceDictionary.Properties.Resources.loc_btn_yes, ResourceDictionary.Properties.Resources.loc_btn_no, DialogResult.Yes, DialogResult.No, 770.0, 560.0, 390.0, "/ResourceDictionary;component/assets/settings_window/settings_background.png")
 		{
 			Owner = _ownerWindow
@@ -748,7 +748,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 		base.IsEnabled = !_game_settings_dialog.IsVisible;
 		if (_game_settings_dialog.IsVisible)
 		{
-			_autorun_timer.Stop();
+			_autorun_timer?.Stop();
 			BlurryBackground();
 		}
 		else
@@ -845,7 +845,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 
 	private void ButtonClose_Click(object sender, RoutedEventArgs e)
 	{
-		_autorun_timer.Stop();
+		_autorun_timer?.Stop();
 		saveLauncherPlacement();
 		_launcher_settings.Save();
 		_game_settings_holder.SaveSettings();
@@ -1036,6 +1036,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 
 	private void StartAutorunTimer()
 	{
+		UpdatePlayButtonContent();
 		_autorun_time_left = AUTORUN_TIME;
 		_autorun_timer = new DispatcherTimer();
 		_autorun_timer.Interval = TimeSpan.FromSeconds(1);

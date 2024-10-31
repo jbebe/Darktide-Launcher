@@ -78,4 +78,6 @@ public partial class LoadingBar : Window, IComponentConnector
 			TextTitle.BeginAnimation(Canvas.LeftProperty, doubleAnimation);
 		}
 	}
+
+    private void ButtonClose_Click(object sender, RoutedEventArgs e) => Close();
 }

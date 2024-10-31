@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Launcher.Properties;
 using LauncherHelper;
-using Steamworks;
+//using Steamworks;
 
 namespace Launcher;
 
@@ -196,14 +196,14 @@ public class ArgumentHolder
 		if (steamInitialized && releasePlatform == ReleasePlatform.steam.ToString())
 		{
 			FileLogger.Instance.CreateEntry("Steam is initialized.");
-			uint appId = SteamUtils.GetAppID().m_AppId;
+			//uint appId = SteamUtils.GetAppID().m_AppId;
 			string pchName = new string(' ', 32);
-			if (!SteamApps.GetCurrentBetaName(out pchName, 32))
-			{
-				pchName = "default";
-			}
-			FileLogger.Instance.CreateEntry($"Retrieving backend settings for Steam application '{appId}' (branch='{pchName}')");
-			text = BackendSettings.GetBackend(appId, pchName);
+			//if (!SteamApps.GetCurrentBetaName(out pchName, 32))
+			//{
+			//	pchName = "default";
+			//}
+			//FileLogger.Instance.CreateEntry($"Retrieving backend settings for Steam application '{appId}' (branch='{pchName}')");
+			text = "prod";// BackendSettings.GetBackend(appId, pchName);
 		}
 		if (releasePlatform == ReleasePlatform.ms_store.ToString())
 		{

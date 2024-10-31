@@ -25,7 +25,7 @@ using LauncherHelper;
 using Microsoft.Win32;
 using ResourceDictionary;
 using ResourceDictionary.Properties;
-using Steamworks;
+//using Steamworks;
 
 namespace Launcher;
 
@@ -237,12 +237,12 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 		if (UsingSteam)
 		{
 			uint.TryParse(Settings.Default.AppId, out var result);
-			if (!SteamHelper.InitializeSteam(result, out _steamInitialized))
-			{
-				InitializeComponent();
-				return;
-			}
-		}
+            _steamInitialized = true;//if (!SteamHelper.InitializeSteam(result, out _steamInitialized))
+            //{
+            //	InitializeComponent();
+            //	return;
+            //}
+        }
 		_ownerWindow.Loaded += OnWindowLoaded;
 		_ownerWindow.ContentRendered += OnWindowContentRendered;
 		using (new FileLogger.ScopeHolder("Main Window"))
@@ -277,7 +277,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 				{
 					if (UsingSteam && _steamInitialized)
 					{
-						languageName = SteamApps.GetCurrentGameLanguage();
+						languageName = "english";// SteamApps.GetCurrentGameLanguage();
 					}
 					else if (Settings.Default.ReleasePlatform == ReleasePlatform.ms_store.ToString())
 					{

@@ -753,7 +753,7 @@ public partial class UI : System.Windows.Controls.UserControl, INotifyPropertyCh
 		}
 		else
 		{
-			UpdatePlayButtonContent(clear: !_game_settings_holder.AutoRun);
+			UpdatePlayButtonContent(clear: true);
 			UnBlurryBackground();
 		}
 	}

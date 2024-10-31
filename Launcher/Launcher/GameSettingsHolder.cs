@@ -271,15 +271,7 @@ public class GameSettingsHolder : INotifyPropertyChanged
 
 	private bool _IPv6NetworkEnabled;
 
-	private bool _autoRun;
-
 	public bool IsInitialized { get; set; }
-
-	private readonly LocalizationExtensions _localizationExtensions;
-
-	public string LocAutoRun => _localizationExtensions.Autorun;
-
-	public string LocAutorunTooltip => _localizationExtensions.AutorunTooltip;
 
 	public bool RayTracingOptionVisible
 	{
@@ -778,23 +770,9 @@ public class GameSettingsHolder : INotifyPropertyChanged
 		}
 	}
 
-	public bool AutoRun
-	{
-		get
-		{
-			return _autoRun;
-		}
-		set
-		{
-			if (_autoRun != value)
-			{
-				_autoRun = value;
-				OnPropertyChanged("AutoRun");
-			}
-		}
-	}
-
 	public event PropertyChangedEventHandler PropertyChanged;
+
+	public GameSettingsHolder(GameSettingsHolder other) : this(other._ownerWindow, other._system_info, other.CurrentLanguage) {}
 
 	public GameSettingsHolder(Window ownerWindow, SysInfo si, LocalizationManager.LanguageFormat currentLanguage)
 	{
@@ -921,7 +899,6 @@ public class GameSettingsHolder : INotifyPropertyChanged
 		_setting_defaults.Add("version", () => 3);
 		_setting_defaults.Add("launcher_verification_passed", () => FileVerificationPassed);
 		LoadSettings();
-		_localizationExtensions = new LocalizationExtensions(CurrentLanguage.Id);
 	}
 
 	protected void ShowDetectDialog(SysInfo.DetectQualityResult result)
@@ -1215,7 +1192,6 @@ public class GameSettingsHolder : INotifyPropertyChanged
 		{
 			_gpuId = _settings["gpu_id"].ToString();
 		}
-		AutoRun = _settings.TryGetValue("autorun", out var obj) && obj is bool autoRun ? autoRun : false;
 		VerifySettingsVersion();
 		IsInitialized = true;
 	}
@@ -1335,7 +1311,6 @@ public class GameSettingsHolder : INotifyPropertyChanged
 		_settings["max_worker_threads"] = (int)CurrentWorkerThreads;
 		_settings["gpu_id"] = CurrentOutput.AdapterName;
 		_settings["launcher_verification_passed"] = FileVerificationPassed;
-		_settings["autorun"] = AutoRun;
 		Settings.Default.Save();
 		writeToSettingsFile(_settings, settingsFilePath());
 	}
@@ -1345,7 +1320,7 @@ public class GameSettingsHolder : INotifyPropertyChanged
 		return SJSON.Encode(_settings).Replace("\n", "\r\n");
 	}
 
-	private void OnPropertyChanged(string prop)
+	protected void OnPropertyChanged(string prop)
 	{
 		if (this.PropertyChanged != null)
 		{

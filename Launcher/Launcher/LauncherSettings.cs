@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Launcher.Properties;
 using LauncherHelper;
@@ -19,6 +20,14 @@ public class LauncherSettings
 	public double WindowTopPos = 40.0;
 
 	public string LastContentRevision = "";
+
+	public string OutputVersion;
+
+	public int PrimaryOutputId;
+
+	public List<SysInfo.Output> Outputs;
+	
+	public bool AutoRun;
 
 	public bool Load()
 	{

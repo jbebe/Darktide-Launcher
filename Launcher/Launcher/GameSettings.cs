@@ -9,16 +9,16 @@ namespace Launcher;
 
 public partial class GameSettings : Window, IComponentConnector
 {
-	private GameSettingsHolder _settings_holder;
+	private GameAndLauncherSettingsHolder _settings_holder;
 
 	private bool _isUpdating;
 
-	public GameSettings(GameSettingsHolder settings_holder)
+	public GameSettings(GameSettingsHolder game_settings_holder, LauncherSettings launcher_settings)
 	{
-		_settings_holder = settings_holder;
+		_settings_holder = new GameAndLauncherSettingsHolder(game_settings_holder, launcher_settings);
 		InitializeComponent();
 		base.FontFamily = FontManager.CurrentFont;
-		base.DataContext = settings_holder;
+		base.DataContext = _settings_holder;
 		ResolutionCombo.SelectionChanged += on_resolution_changed;
 		DLSSComboMode.SelectionChanged += OnDLSSSelectionChanged;
 		FrameGenerationComboMode.SelectionChanged += OnFrameGenerationSelectionChanged;
